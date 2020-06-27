@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!-- Allow HTTP requests e.g loading image resources with http:// is not allowed
+     in API 28 and above unless we add this security permission -->
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">static.food2fork.com</domain>
+    </domain-config>
+</network-security-config>
