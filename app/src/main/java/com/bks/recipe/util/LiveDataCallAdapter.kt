@@ -1,7 +1,6 @@
 package com.bks.recipe.util
 
 import androidx.lifecycle.LiveData
-import com.bks.recipe.requests.ServiceGenerator
 import com.bks.recipe.requests.response.ApiResponse
 import retrofit2.Call
 import retrofit2.CallAdapter
