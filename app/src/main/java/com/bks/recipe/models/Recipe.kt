@@ -15,15 +15,15 @@ data class Recipe(
     @ColumnInfo(name = "recipe_id")
     val id : String,
     @ColumnInfo(name = "title")
-    val title: String?,
+    val title: String,
     @ColumnInfo(name = "publisher")
-    val publisher: String?,
+    val publisher: String,
     @ColumnInfo(name = "image_url")
-    val imageUrl: String?,
+    val imageUrl: String,
     @ColumnInfo(name = "social_rank")
     val socialRank: Float,
     @ColumnInfo(name = "ingredients")
-    val ingredients: ArrayList<String>?,
+    val ingredients: ArrayList<String>,
     @ColumnInfo(name = "timestamp")
     val timestamp: Long
 ) : Parcelable {
