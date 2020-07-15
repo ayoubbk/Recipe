@@ -9,13 +9,12 @@ import com.bks.recipe.persistence.RecipeDao
 import com.bks.recipe.persistence.RecipeDatabase
 import com.bks.recipe.requests.ServiceGenerator
 import com.bks.recipe.requests.response.ApiResponse
-import com.bks.recipe.requests.response.RecipeResponse
 import com.bks.recipe.requests.response.RecipeSearchResponse
 import com.bks.recipe.util.Constant
 import com.bks.recipe.util.NetworkBoundResource
 import com.bks.recipe.util.Resource
 
-class RecipeRepository private constructor(context: Context) {
+class RecipeRepository(private val context: Context) {
     private val recipeDao: RecipeDao = RecipeDatabase.getInstance(context).getRecipeDao() // val mean readOnly
 
     fun searchRecipesApi(query: String, pageNumber: Int): LiveData<Resource<List<Recipe>>> {
@@ -23,7 +22,6 @@ class RecipeRepository private constructor(context: Context) {
             NetworkBoundResource<List<Recipe>, RecipeSearchResponse?>(AppExecutors.getInstance()!!) {
 
             override fun saveCallResult(item: RecipeSearchResponse?) {
-                // Recipe will be null if the API KEY is expired
                 item?.recipes?.let { it ->
                     val recipes = it.toTypedArray()
                     var index = 0
@@ -34,7 +32,7 @@ class RecipeRepository private constructor(context: Context) {
                             // if the recipe already exist I don't want to set the ingredients or timestamp b/c
                             // they will be erased
                             recipeDao.updateRecipe(
-                                recipes[index].id,
+                                recipes[index].recipe_id,
                                 recipes[index].title,
                                 recipes[index].publisher,
                                 recipes[index].imageUrl,
@@ -62,39 +60,54 @@ class RecipeRepository private constructor(context: Context) {
         }.asLiveData()
     }
 
-    fun searchRecipeApi(recipeId: String?): LiveData<Resource<Recipe>> {
-        return object : NetworkBoundResource<Recipe, RecipeResponse>() {
-            override fun saveCallResult(item: RecipeResponse) {
-
-            }
-
-            override fun shouldFetch(data: Recipe?): Boolean {
-                return false
-            }
-
-            override fun loadFromDb(): LiveData<Recipe> {
-
-            }
-
-            override fun createCall(): LiveData<ApiResponse<RecipeResponse>> {
-
-            }
-        }.asLiveData()
-    }
+//    fun searchRecipeApi(recipeId: String?): LiveData<Resource<Recipe>> {
+//        return object : NetworkBoundResource<Recipe, RecipeResponse>() {
+//            override fun saveCallResult(item: RecipeResponse) {
+//
+//            }
+//
+//            override fun shouldFetch(data: Recipe?): Boolean {
+//                return false
+//            }
+//
+//            override fun loadFromDb(): LiveData<Recipe> {
+//
+//            }
+//
+//            override fun createCall(): LiveData<ApiResponse<RecipeResponse>> {
+//
+//            }
+//        }.asLiveData()
+//    }
 
     companion object {
         private const val TAG = "RecipeRepository"
 
-        @Volatile private var instance: RecipeRepository? = null
+        @Volatile
+        var instance: RecipeRepository? = null
 
-        fun getInstance(context: Context): RecipeRepository? {
-            if (instance == null) { // check 1
-                synchronized(this) {
-                    if(instance == null) // check 2
-                    instance = RecipeRepository(context)
-                }
+        fun getInstance(context: Context): RecipeRepository {
+            return instance?: synchronized(RecipeRepository::class.java) {
+                instance?: RecipeRepository(context)
             }
-            return instance
+
+            /** Way #1  */
+//            if (instance == null) { // check 1
+//                synchronized(this) {
+//                    if(instance == null) // check 2
+//                    instance = RecipeRepository(context)
+//                }
+//            }
+//            return instance
+
+            /** way #2 */
+
+//             synchronized(this)  {
+//                 return instance?: instance?: RecipeRepository(context)
+//             }
+
+
+
         }
     }
 
