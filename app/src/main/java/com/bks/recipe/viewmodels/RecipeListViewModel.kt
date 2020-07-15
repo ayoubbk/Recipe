@@ -11,7 +11,6 @@ import com.bks.recipe.util.Status
 class RecipeListViewModel constructor(private val recipeRepository : RecipeRepository) : ViewModel() {
 
     var viewState =  MutableLiveData<ViewState>().apply { ViewState.CATEGORIES }
-
     val recipes: MediatorLiveData<Resource<List<Recipe>>> = MediatorLiveData()
 
     // query extras
@@ -25,7 +24,6 @@ class RecipeListViewModel constructor(private val recipeRepository : RecipeRepos
     init {
         viewState.value = ViewState.CATEGORIES
     }
-
 
     fun searchRecipesApi(query: String, pageNumber: Int) {
         var pageNumber = pageNumber

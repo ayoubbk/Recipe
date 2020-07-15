@@ -3,10 +3,10 @@ package com.bks.recipe
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bks.recipe.adapters.OnRecipeListener
@@ -32,13 +32,11 @@ class RecipeListActivity : BaseActivity(), OnRecipeListener, RecipeListAdapter.I
 
     private lateinit var recyclerView : RecyclerView
     private lateinit var searchView : SearchView
-    private lateinit var viewModel: RecipeListViewModel
-    //private var recipeAdapter: RecipeListAdapter? = null
     private lateinit var recipeRepository : RecipeRepository
     private var recipeRecyclerAdapter : RecipeRecyclerAdapter? = null
 
-
-    //private val viewModel by viewModels<RecipeListViewModel> { ViewModelFactory(recipeRepository, this) }
+    // Lazy instantiate RecipeListViewModel
+    private val viewModel by viewModels<RecipeListViewModel> { ViewModelFactory(recipeRepository, this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +45,6 @@ class RecipeListActivity : BaseActivity(), OnRecipeListener, RecipeListAdapter.I
         searchView = findViewById(R.id.search_view)
 
         initRepository()
-        viewModel = ViewModelProvider(this, ViewModelFactory(recipeRepository,this)).get(RecipeListViewModel::class.java)
 
         initRecyclerView()
         initSearchView()
@@ -58,8 +55,6 @@ class RecipeListActivity : BaseActivity(), OnRecipeListener, RecipeListAdapter.I
     private fun initRepository() {
         recipeRepository = RecipeRepository.getInstance(this)
     }
-
-    ///// INIT METHODS
 
     private fun initRecyclerView() {
 
@@ -168,7 +163,6 @@ class RecipeListActivity : BaseActivity(), OnRecipeListener, RecipeListAdapter.I
         searchView.clearFocus()
     }
 
-    /// LISTENER CALLBACKS
     override fun onRecipeClick(position: Int) {
         Log.d(TAG, "onRecipeClick: CLICKED")
     }

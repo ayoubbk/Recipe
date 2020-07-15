@@ -100,13 +100,11 @@ class RecipeRepository(private val context: Context) {
 //            }
 //            return instance
 
-            /** way #2 */
 
+            /** way #2 */
 //             synchronized(this)  {
 //                 return instance?: instance?: RecipeRepository(context)
 //             }
-
-
 
         }
     }
