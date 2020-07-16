@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.savedstate.SavedStateRegistryOwner
 import com.bks.recipe.repositories.RecipeRepository
 import com.bks.recipe.viewmodels.RecipeListViewModel
+import com.bks.recipe.viewmodels.RecipeViewModel
 
 /**
  * Factory for all ViewModels.
@@ -26,6 +27,8 @@ class ViewModelFactory constructor(
         when {
             isAssignableFrom(RecipeListViewModel::class.java) ->
                 RecipeListViewModel(recipeRepository)
+            isAssignableFrom(RecipeViewModel::class.java) ->
+                RecipeViewModel(recipeRepository)
             else ->
                 throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }

@@ -45,13 +45,10 @@ class AppExecutors private constructor() : java.io.Serializable {
         private var soleInstance : AppExecutors ? = null
 
         //if there is no instance available...create new one
-        fun getInstance() : AppExecutors ? {
-            if(soleInstance == null ) {
-                synchronized(AppExecutors::class.java) {
-                    if(soleInstance == null) soleInstance = AppExecutors()
-                }
-            }
-            return soleInstance
+        fun getInstance() : AppExecutors {
+            synchronized(AppExecutors::class.java) {
+                return soleInstance?: soleInstance?: AppExecutors()
+            } 
         }
 
         // or you can replace getInstance method by the following statements (getter of instance)

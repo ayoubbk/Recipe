@@ -17,18 +17,20 @@ object ServiceGenerator {
         it.level = HttpLoggingInterceptor.Level.BODY
     }
 
-    private val client = OkHttpClient.Builder() // establish connection to server
-        .connectTimeout(
-            Constant.CONNECTION_TIMEOUT,
-            TimeUnit.SECONDS)
+    private val client = OkHttpClient.Builder()
+        // establish connection to server
+        .connectTimeout(Constant.CONNECTION_TIMEOUT, TimeUnit.SECONDS)
+
         // time between each byte read from the server
-        .readTimeout(
-            READ_TIMEOUT,
-            TimeUnit.SECONDS)
+        .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
+
         // time between each byte sent to server
         .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
+
         .retryOnConnectionFailure(false)
+
         .addInterceptor(logger)
+
         .build()
 
     private val retrofitBuilder: Retrofit.Builder = Retrofit.Builder()

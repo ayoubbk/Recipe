@@ -12,20 +12,19 @@ import de.hdodenhof.circleimageview.CircleImageView
 
 class CategoryViewHolder(
     @NonNull itemView: View,
-    var listener: OnRecipeListener,
+    private var listener: OnRecipeListener,
     var requestManager: RequestManager
 ) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
 
-    var categoryImage: CircleImageView = itemView.findViewById(R.id.category_image)
-    var categoryTitle: TextView = itemView.findViewById(R.id.category_title)
+    private var categoryImage: CircleImageView = itemView.findViewById(R.id.category_image)
+    private var categoryTitle: TextView = itemView.findViewById(R.id.category_title)
 
     init {
         itemView.setOnClickListener(this)
     }
 
     fun onBind(recipe: Recipe) {
-        val path =
-            Uri.parse("android.resource://com.bks.recipe/drawable/" + recipe.imageUrl)
+        val path = Uri.parse("android.resource://com.bks.recipe/drawable/" + recipe.imageUrl)
         requestManager
             .load(path)
             .into(categoryImage)

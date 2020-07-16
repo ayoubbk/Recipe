@@ -31,7 +31,7 @@ data class Recipe(
     @ColumnInfo(name = "ingredients")
     val ingredients: List<String> = emptyList<String>(),
     @ColumnInfo(name = "timestamp")
-    val timestamp: Long = 0
+    var timestamp: Long = 0
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),

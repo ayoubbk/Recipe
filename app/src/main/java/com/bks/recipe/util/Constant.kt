@@ -4,9 +4,9 @@ class Constant {
 
     companion object {
         const val BASE_URL = "https://recipesapi.herokuapp.com"
-        const val CONNECTION_TIMEOUT = 10000L
-        const val READ_TIMEOUT = 10000L
-        const val WRITE_TIMEOUT = 10000L
+        const val CONNECTION_TIMEOUT = 10L // 10 sec
+        const val READ_TIMEOUT = 2L // 2 sec
+        const val WRITE_TIMEOUT = 2L // 2 sec
         const val API_KEY  = ""
         const val QUERY_EXHAUSTED = "No more results."
 

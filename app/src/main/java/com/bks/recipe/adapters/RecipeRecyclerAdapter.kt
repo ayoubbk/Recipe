@@ -14,8 +14,6 @@ import com.bumptech.glide.ListPreloader.PreloadModelProvider
 import com.bumptech.glide.RequestBuilder
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.util.ViewPreloadSizeProvider
-import java.util.*
-import kotlin.collections.ArrayList
 
 class RecipeRecyclerAdapter(
     private val mOnRecipeListener: OnRecipeListener,
@@ -23,48 +21,6 @@ class RecipeRecyclerAdapter(
     private val preloadSizeProvider: ViewPreloadSizeProvider<String>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder?>(), PreloadModelProvider<String> {
     private var mRecipes: ArrayList<Recipe>? = null
-
-//    @Override
-//    fun onCreateViewHolder(@NonNull viewGroup: ViewGroup, i: Int): RecyclerView.ViewHolder {
-//        var view: View? = null
-//        return when (i) {
-//            RECIPE_TYPE -> {
-//                view = LayoutInflater.from(viewGroup.context)
-//                    .inflate(R.layout.layout_recipe_list_item, viewGroup, false)
-//                RecipeListAdapter.RecipeViewHolder(
-//                    view,
-//                    mOnRecipeListener,
-//                    requestManager,
-//                    preloadSizeProvider
-//                )
-//            }
-//            LOADING_TYPE -> {
-//                view = LayoutInflater.from(viewGroup.context)
-//                    .inflate(R.layout.layout_loading_list_item, viewGroup, false)
-//                LoadingViewHolder(view)
-//            }
-//            EXHAUSTED_TYPE -> {
-//                view = LayoutInflater.from(viewGroup.context)
-//                    .inflate(R.layout.layout_search_exhausted, viewGroup, false)
-//                SearchExhaustedViewHolder(view)
-//            }
-//            CATEGORY_TYPE -> {
-//                view = LayoutInflater.from(viewGroup.context)
-//                    .inflate(R.layout.layout_category_list_item, viewGroup, false)
-//                CategoryViewHolder(view, mOnRecipeListener, requestManager)
-//            }
-//            else -> {
-//                view = LayoutInflater.from(viewGroup.context)
-//                    .inflate(R.layout.layout_recipe_list_item, viewGroup, false)
-//                RecipeViewHolder(
-//                    view,
-//                    mOnRecipeListener,
-//                    requestManager,
-//                    preloadSizeProvider
-//                )
-//            }
-//        }
-//    }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         var view: View? = null
@@ -131,13 +87,7 @@ class RecipeRecyclerAdapter(
         }
     }
 
-    // display loading during search request
-    fun displayOnlyLoading() {
-        clearRecipesList()
-        val recipe = Recipe(title = "LOADING...")
-        mRecipes?.add(recipe)
-        notifyDataSetChanged()
-    }
+
 
     private fun clearRecipesList() {
         if (mRecipes == null) {
@@ -164,6 +114,14 @@ class RecipeRecyclerAdapter(
             }
             notifyDataSetChanged()
         }
+    }
+
+    // display loading during search request
+    fun displayOnlyLoading() {
+        clearRecipesList()
+        val recipe = Recipe(title = "LOADING...")
+        mRecipes?.add(recipe)
+        notifyDataSetChanged()
     }
 
     // pagination loading

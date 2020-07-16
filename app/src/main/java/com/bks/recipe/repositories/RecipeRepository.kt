@@ -9,6 +9,7 @@ import com.bks.recipe.persistence.RecipeDao
 import com.bks.recipe.persistence.RecipeDatabase
 import com.bks.recipe.requests.ServiceGenerator
 import com.bks.recipe.requests.response.ApiResponse
+import com.bks.recipe.requests.response.RecipeResponse
 import com.bks.recipe.requests.response.RecipeSearchResponse
 import com.bks.recipe.util.Constant
 import com.bks.recipe.util.NetworkBoundResource
@@ -19,7 +20,7 @@ class RecipeRepository(private val context: Context) {
 
     fun searchRecipesApi(query: String, pageNumber: Int): LiveData<Resource<List<Recipe>>> {
         return object :
-            NetworkBoundResource<List<Recipe>, RecipeSearchResponse?>(AppExecutors.getInstance()!!) {
+            NetworkBoundResource<List<Recipe>, RecipeSearchResponse?>(AppExecutors.getInstance()) {
 
             override fun saveCallResult(item: RecipeSearchResponse?) {
                 item?.recipes?.let { it ->
@@ -43,7 +44,7 @@ class RecipeRepository(private val context: Context) {
                 }
             }
 
-            override fun shouldFetch(data: List<Recipe>?): Boolean {
+            override fun shouldFetch(data: List<Recipe>): Boolean {
                 return true
             }
 
@@ -60,26 +61,62 @@ class RecipeRepository(private val context: Context) {
         }.asLiveData()
     }
 
-//    fun searchRecipeApi(recipeId: String?): LiveData<Resource<Recipe>> {
-//        return object : NetworkBoundResource<Recipe, RecipeResponse>() {
-//            override fun saveCallResult(item: RecipeResponse) {
-//
-//            }
-//
-//            override fun shouldFetch(data: Recipe?): Boolean {
-//                return false
-//            }
-//
-//            override fun loadFromDb(): LiveData<Recipe> {
-//
-//            }
-//
-//            override fun createCall(): LiveData<ApiResponse<RecipeResponse>> {
-//
-//            }
-//        }.asLiveData()
-//    }
+    fun searchRecipeApi(recipeId: String): LiveData<Resource<Recipe>> {
+        return object : NetworkBoundResource<Recipe, RecipeResponse>(AppExecutors.getInstance()) {
+            override fun saveCallResult(item: RecipeResponse) {
 
+                // will be null if API key is expired
+                if (item.recipe != null) {
+                    item.recipe.timestamp = System.currentTimeMillis() / 1000
+                    recipeDao.insertRecipe(item.recipe)
+                }
+            }
+
+            override fun shouldFetch(data: Recipe): Boolean {
+                Log.d(TAG, "shouldFetch: recipe: $data")
+                val currentTime = (System.currentTimeMillis() / 1000).toInt()
+                Log.d(
+                    TAG,
+                    "shouldFetch: current time: $currentTime"
+                )
+                val lastRefresh= data.timestamp
+                Log.d(
+                    TAG,
+                    "shouldFetch: last refresh: $lastRefresh"
+                )
+                Log.d(
+                    TAG,
+                    "shouldFetch: it's been " + (currentTime - lastRefresh) / 60 / 60 / 24 +
+                            " days since this recipe was refreshed. 30 days must elapse before refreshing. "
+                )
+                if (currentTime - data.timestamp >= Constant.RECIPE_REFRESH_TIME) {
+                    Log.d(
+                        TAG,
+                        "shouldFetch: SHOULD REFRESH RECIPE?! " + true
+                    )
+                    return true
+                }
+                Log.d(
+                    TAG,
+                    "shouldFetch: SHOULD REFRESH RECIPE?! " + false
+                )
+                return false
+            }
+
+
+            override fun loadFromDb(): LiveData<Recipe> {
+                return recipeDao.getRecipeById(recipeId)
+            }
+
+
+            override fun createCall(): LiveData<ApiResponse<RecipeResponse>> {
+                return ServiceGenerator.recipeApi.getRecipe(
+                    Constant.API_KEY,
+                    recipeId
+                )
+            }
+        }.asLiveData()
+    }
     companion object {
         private const val TAG = "RecipeRepository"
 

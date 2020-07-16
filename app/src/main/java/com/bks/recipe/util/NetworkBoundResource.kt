@@ -52,6 +52,7 @@ abstract class NetworkBoundResource<CacheObject, RequestObject>
     private fun fetchFromNetwork(dbSource: LiveData<CacheObject>) {
         val apiResponse = createCall()
         // we re-attach dbSource as a new source, it will dispatch its latest value quickly
+        // update LiveData for loading status
         result.addSource(dbSource) { newData ->
             setValue(Resource.loading(newData))
         }
@@ -107,7 +108,7 @@ abstract class NetworkBoundResource<CacheObject, RequestObject>
     // Called with the data in the database to decide whether to fetch
     // potentially updated data from the network.
     @MainThread
-    protected abstract fun shouldFetch(data: CacheObject?): Boolean
+    protected abstract fun shouldFetch(data: CacheObject): Boolean
 
     // Called to get the cached data from the database.
     @MainThread

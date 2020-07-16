@@ -1,5 +1,6 @@
 package com.bks.recipe
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -18,7 +19,7 @@ import com.bks.recipe.util.Constant.Companion.QUERY_EXHAUSTED
 import com.bks.recipe.util.Resource
 import com.bks.recipe.util.Status
 import com.bks.recipe.util.TopSpacingItemDecoration
-import com.bks.recipe.util.ViewModelFactory
+import com.bks.recipe.util.getViewModelFactory
 import com.bks.recipe.viewmodels.RecipeListViewModel
 import com.bks.recipe.viewmodels.ViewState
 import com.bumptech.glide.Glide
@@ -28,7 +29,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.util.ViewPreloadSizeProvider
 
 
-class RecipeListActivity : BaseActivity(), OnRecipeListener, RecipeListAdapter.Interaction {
+class RecipeListActivity : BaseActivity(), OnRecipeListener {
 
     private lateinit var recyclerView : RecyclerView
     private lateinit var searchView : SearchView
@@ -36,7 +37,7 @@ class RecipeListActivity : BaseActivity(), OnRecipeListener, RecipeListAdapter.I
     private var recipeRecyclerAdapter : RecipeRecyclerAdapter? = null
 
     // Lazy instantiate RecipeListViewModel
-    private val viewModel by viewModels<RecipeListViewModel> { ViewModelFactory(recipeRepository, this) }
+    private val viewModel by viewModels<RecipeListViewModel> { getViewModelFactory()}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +45,7 @@ class RecipeListActivity : BaseActivity(), OnRecipeListener, RecipeListAdapter.I
         recyclerView = findViewById(R.id.recipe_list)
         searchView = findViewById(R.id.search_view)
 
-        initRepository()
+        //initRepository()
 
         initRecyclerView()
         initSearchView()
@@ -164,16 +165,14 @@ class RecipeListActivity : BaseActivity(), OnRecipeListener, RecipeListAdapter.I
     }
 
     override fun onRecipeClick(position: Int) {
-        Log.d(TAG, "onRecipeClick: CLICKED")
+        Log.d(TAG, "onRecipeClick: CLICKED : $position")
+        val intent = Intent(this, RecipeActivity::class.java)
+        intent.putExtra("recipe", recipeRecyclerAdapter?.getSelectedRecipe(position))
+        startActivity(intent)
     }
 
     override fun onCategoryClick(category: String) {
         searchRecipeApi(category)
-    }
-
-    override fun onItemSelected(position: Int, item: Recipe) {
-        println("DEBUG CLICKED $position")
-        println("DEBUG CLICKED $item")
     }
 
     private fun displaySearchCategories() {
