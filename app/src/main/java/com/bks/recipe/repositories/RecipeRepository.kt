@@ -44,7 +44,7 @@ class RecipeRepository(private val context: Context) {
                 }
             }
 
-            override fun shouldFetch(data: List<Recipe>): Boolean {
+            override fun shouldFetch(data: List<Recipe>?): Boolean {
                 return true
             }
 
@@ -72,34 +72,24 @@ class RecipeRepository(private val context: Context) {
                 }
             }
 
-            override fun shouldFetch(data: Recipe): Boolean {
+            override fun shouldFetch(data: Recipe?): Boolean {
                 Log.d(TAG, "shouldFetch: recipe: $data")
-                val currentTime = (System.currentTimeMillis() / 1000).toInt()
-                Log.d(
-                    TAG,
-                    "shouldFetch: current time: $currentTime"
-                )
-                val lastRefresh= data.timestamp
-                Log.d(
-                    TAG,
-                    "shouldFetch: last refresh: $lastRefresh"
-                )
-                Log.d(
-                    TAG,
-                    "shouldFetch: it's been " + (currentTime - lastRefresh) / 60 / 60 / 24 +
-                            " days since this recipe was refreshed. 30 days must elapse before refreshing. "
-                )
-                if (currentTime - data.timestamp >= Constant.RECIPE_REFRESH_TIME) {
-                    Log.d(
-                        TAG,
-                        "shouldFetch: SHOULD REFRESH RECIPE?! " + true
-                    )
-                    return true
+                val currentTime = System.currentTimeMillis() / 1000
+                Log.d(TAG, "shouldFetch: current time: $currentTime")
+                val lastRefresh= data?.timestamp
+                Log.d(TAG, "shouldFetch: last refresh: $lastRefresh")
+                lastRefresh?.let {
+                    val diff = currentTime - it
+                    Log.d(TAG, "shouldFetch: it's been " + diff / 60 / 60 / 24 +
+                            " days since this recipe was refreshed. 30 days must elapse before refreshing. ")
                 }
-                Log.d(
-                    TAG,
-                    "shouldFetch: SHOULD REFRESH RECIPE?! " + false
-                )
+                data?.timestamp?.let {
+                    if (currentTime - it >= Constant.RECIPE_REFRESH_TIME) {
+                        Log.d(TAG, "shouldFetch: SHOULD REFRESH RECIPE?! " + true)
+                        return true
+                    }
+                }
+                Log.d(TAG, "shouldFetch: SHOULD REFRESH RECIPE?! " + false)
                 return false
             }
 

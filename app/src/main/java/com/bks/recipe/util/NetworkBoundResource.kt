@@ -108,7 +108,7 @@ abstract class NetworkBoundResource<CacheObject, RequestObject>
     // Called with the data in the database to decide whether to fetch
     // potentially updated data from the network.
     @MainThread
-    protected abstract fun shouldFetch(data: CacheObject): Boolean
+    protected abstract fun shouldFetch(data: CacheObject?): Boolean
 
     // Called to get the cached data from the database.
     @MainThread
