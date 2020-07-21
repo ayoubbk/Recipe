@@ -12,7 +12,8 @@ sealed class ApiResponse<T> {
 
     companion object {
         fun <T> create(error: Throwable): ApiErrorResponse<T> {
-            return ApiErrorResponse(error.message ?: "unknown error\n check network connection")
+            //return ApiErrorResponse(error.message ?: "unknown error\n check network connection")
+            return ApiErrorResponse((if (error.message == "") error.message else "Unknown error\nCheck network connection")!!)
         }
 
         fun <T> create(response: Response<T>): ApiResponse<T> {

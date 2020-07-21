@@ -1,7 +1,6 @@
 package com.bks.recipe.util
 
 import androidx.lifecycle.LiveData
-import com.bks.recipe.requests.ServiceGenerator
 import com.bks.recipe.requests.response.ApiResponse
 import retrofit2.Call
 import retrofit2.CallAdapter
@@ -17,7 +16,8 @@ import java.lang.reflect.Type
  * we're wrapping the ApiResponse around our Retrofit response object which is R and we're wrapping that with LiveData
  */
 
-class LiveDataCallAdapter<R>  constructor(private val responseType : Type) : CallAdapter<R, LiveData<ApiResponse<R>>> {
+class LiveDataCallAdapter<R>  constructor(private val responseType : Type) :
+    CallAdapter<R, LiveData<ApiResponse<R>>> {
 
 
     override fun responseType(): Type {

@@ -5,27 +5,33 @@ import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
+import com.bks.recipe.persistence.Converter
+import com.google.gson.annotations.Expose
+import com.google.gson.annotations.SerializedName
 import org.jetbrains.annotations.NotNull
-import java.util.*
 
 @Entity(tableName = "recipes")
+@TypeConverters(Converter::class)
 data class Recipe(
     @PrimaryKey
     @NotNull
     @ColumnInfo(name = "recipe_id")
-    val id : String,
+    val recipe_id : String = "",
     @ColumnInfo(name = "title")
-    val title: String?,
+    val title: String = "",
     @ColumnInfo(name = "publisher")
-    val publisher: String?,
+    val publisher: String = "",
     @ColumnInfo(name = "image_url")
-    val imageUrl: String?,
+    @SerializedName(value = "image_url")
+    val imageUrl: String = "",
     @ColumnInfo(name = "social_rank")
-    val socialRank: Float,
+    @SerializedName(value = "social_rank")
+    val socialRank: Float = 0f,
     @ColumnInfo(name = "ingredients")
-    val ingredients: ArrayList<String>?,
+    val ingredients: List<String> = emptyList<String>(),
     @ColumnInfo(name = "timestamp")
-    val timestamp: Long
+    var timestamp: Long = 0
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),
@@ -39,7 +45,7 @@ data class Recipe(
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(id)
+        parcel.writeString(recipe_id)
         parcel.writeString(title)
         parcel.writeString(publisher)
         parcel.writeString(imageUrl)

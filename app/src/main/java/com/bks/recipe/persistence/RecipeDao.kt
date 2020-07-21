@@ -28,6 +28,6 @@ interface RecipeDao {
     fun getRecipeById(recipeId : String) : LiveData<Recipe>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertRecipes(vararg recipe: Recipe?): LongArray?
+    fun insertRecipes(vararg recipe: Recipe): LongArray
 
 }

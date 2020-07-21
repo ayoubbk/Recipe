@@ -15,12 +15,12 @@ interface RecipeApi {
         @Query("key") key: String?,
         @Query("q") query: String?,
         @Query("page") page: String?
-    ): LiveData<ApiResponse<RecipeSearchResponse?>?>?
+    ): LiveData<ApiResponse<RecipeSearchResponse?>>
 
     // GET RECIPE REQUEST
     @GET("api/get")
     fun getRecipe(
         @Query("key") key: String?,
         @Query("rId") recipe_id: String?
-    ): LiveData<ApiResponse<RecipeResponse?>?>?
+    ): LiveData<ApiResponse<RecipeResponse>>
 }

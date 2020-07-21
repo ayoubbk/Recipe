@@ -12,7 +12,7 @@ import com.bks.recipe.models.Recipe
  * Note that exportSchema should be true in production databases.
  */
 
-@Database(entities = [Recipe::class], version = 0, exportSchema = false)
+@Database(entities = [Recipe::class], version = 1, exportSchema = false)
 abstract class RecipeDatabase : RoomDatabase() {
 
     abstract fun getRecipeDao() : RecipeDao

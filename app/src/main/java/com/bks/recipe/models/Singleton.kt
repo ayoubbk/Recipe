@@ -1,5 +1,8 @@
 package com.bks.recipe.models
 
+import android.content.Context
+import android.util.Log
+
 /**
  * The BEST WAY to write a singleton with Kotlin and Java is by making an enum
  * with instance functions in it
@@ -12,12 +15,14 @@ package com.bks.recipe.models
  *
  * https://discuss.kotlinlang.org/t/var-str-string-is-mutable-or-immutable/3363
  * val is readOnly and does not mean immutable
+ *
+ * Consider also the simple way to create singleton with Kotlin and Java by making an enum with instance functions in it, as explained here
  */
 
 enum class Singleton {
     INSTANCE;
 
-    fun doSomething() {
-
+    fun doSomething(context : Context) {
+        Log.d("abk", "doSomething: test singleton")
     }
 }
