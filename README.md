@@ -1,11 +1,11 @@
 # Recipe
 Android application that aims to share different recipes between users.
 
-This project is inspired from codingWithMitch courses : REST API with MVVM and Retrofit2 and Local Database Cache.
+This project is play around from codingWithMitch courses : REST API with MVVM and Retrofit2 and Local Database Cache.
 
 ### TODO
--[] Complete the database cache stuff
--[] Add Dagger2 Dependency Injection framework
+- Complete the database cache stuff
+- Add Dagger2 Dependency Injection framework
 
 ### Enhancement
 1. Add Github/workflow
