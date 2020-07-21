@@ -17,3 +17,4 @@ This project is inspired from codingWithMitch courses : REST API with MVVM and R
 7. Coroutine with Flow
 8. Adding dark mode
 9. Github Action Lib
+10. Use of MVI architecture design pattern

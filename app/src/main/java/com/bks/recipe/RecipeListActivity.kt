@@ -14,6 +14,7 @@ import com.bks.recipe.adapters.OnRecipeListener
 import com.bks.recipe.adapters.RecipeListAdapter
 import com.bks.recipe.adapters.RecipeRecyclerAdapter
 import com.bks.recipe.models.Recipe
+import com.bks.recipe.models.Singleton
 import com.bks.recipe.repositories.RecipeRepository
 import com.bks.recipe.util.Constant.Companion.QUERY_EXHAUSTED
 import com.bks.recipe.util.Resource
@@ -45,16 +46,11 @@ class RecipeListActivity : BaseActivity(), OnRecipeListener {
         recyclerView = findViewById(R.id.recipe_list)
         searchView = findViewById(R.id.search_view)
 
-        //initRepository()
-
         initRecyclerView()
         initSearchView()
         subscribeObservers()
         setSupportActionBar(findViewById<Toolbar>(R.id.toolbar))
-    }
-
-    private fun initRepository() {
-        recipeRepository = RecipeRepository.getInstance(this)
+        //
     }
 
     private fun initRecyclerView() {

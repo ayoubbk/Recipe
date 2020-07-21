@@ -16,7 +16,8 @@ import java.lang.reflect.Type
  * we're wrapping the ApiResponse around our Retrofit response object which is R and we're wrapping that with LiveData
  */
 
-class LiveDataCallAdapter<R>  constructor(private val responseType : Type) : CallAdapter<R, LiveData<ApiResponse<R>>> {
+class LiveDataCallAdapter<R>  constructor(private val responseType : Type) :
+    CallAdapter<R, LiveData<ApiResponse<R>>> {
 
 
     override fun responseType(): Type {
